@@ -10,11 +10,11 @@ with app.app_context():
     Property.query.delete()
 
 
-    p1 = Property(address="1656 E 1700 N", image="image1.png")
+    p1 = Property(address="1656 E 1700 N", image="image1.png", bedrooms=4, bathrooms=3, floors=2, garage=True, pool=False)
     db.session.add(p1)
-    p2 = Property(address="838 Mt. Rd", image="image2.png")
+    p2 = Property(address="838 Mt. Rd", image="image2.png", bedrooms=6, bathrooms=3, floors=2, garage=True, pool=False)
     db.session.add(p2)
-    p3 = Property(address="123 E 200 N", image="image3.png")
+    p3 = Property(address="123 E 200 N", image="image3.png", bedrooms=4, bathrooms=2, floors=3, garage=False, pool=False)
     db.session.add(p3)
     
     db.session.commit()

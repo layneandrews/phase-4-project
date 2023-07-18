@@ -24,8 +24,13 @@ def index():
         prop_dict = dict(
             address=prop.address,
             image=prop.image,
+            bedrooms=prop.bedrooms,
+            bathrooms=prop.bathrooms,
+            floors=prop.floors,
+            garage=prop.garage,
+            pool=prop.pool,
         )
-    all_props.append(prop_dict)
+        all_props.append(prop_dict)
     return all_props
 
 
@@ -70,5 +75,5 @@ def index():
 
 
 
-# if __name__ == '__main__':
-#     app.run(port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(port=5555, debug=True)
