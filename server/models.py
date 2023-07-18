@@ -18,3 +18,6 @@ class Property(db.Model):
     # keeps track of when a property is updated
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
+    def __repr__(self):
+        return f'<Property Address:{self.address}, Image:{self.image}>'
+
