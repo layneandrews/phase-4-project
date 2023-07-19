@@ -5,6 +5,25 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 # this creates a table in our DB
+class User(db.model):
+    __tablename__ = 'user'
+
+    email = db.Column(db.String, primary_key=True)
+    password = db.Column(db.String)
+    authenticated = db.Column(db.Boolean, default=False)
+
+    def is_active(self):
+        return True
+    
+    def get_id(self):
+        return self.email
+    
+    def is_authenticated(self):
+        return self.authenticated
+    
+    def is_anonymous(self):
+        return False
+
 class Property(db.Model):
     # defines the name of the table
     __tablename__ = "properties"

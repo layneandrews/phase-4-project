@@ -2,8 +2,11 @@ from ipdb import set_trace
 from flask import Flask, request, make_response, jsonify
 # migrations are basically fundamental changes to our DB (ex. DROP TABLE, CREATE TABLE, INSERT, etc.)
 from flask_migrate import Migrate
-from models import db, Property
+from models import db, Property, User
 from flask_restful import Api, Resource
+from flask_login import LoginManager
+
+
 
 
 # this is how the Flask app is initialized
@@ -16,6 +19,9 @@ app.json.compact = False
 
 migrate = Migrate(app, db)
 db.init_app(app)
+
+login_manager = LoginManager(app)
+login_manager.init_app(app)
 
 @app.route("/properties")
 def index():
@@ -32,6 +38,25 @@ def index():
         )
         all_props.append(prop_dict)
     return all_props
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        login_user(user)
+        
+        flask.flash('Logged in successfully.')
+
+        next = flask.request.args.get('next')
+        if not url_has_allowed_host_and_scheme(next, request.host):
+            return flask.abort(400)
+        
+        return flask.redirect(next or flask.url_for('index'))
+    return flask.render_template('login.html', form=form)
 
 
 
