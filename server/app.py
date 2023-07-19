@@ -1,9 +1,10 @@
 from ipdb import set_trace
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response, jsonify, abort
 # migrations are basically fundamental changes to our DB (ex. DROP TABLE, CREATE TABLE, INSERT, etc.)
 from flask_migrate import Migrate
 from models import db, Property
 from flask_restful import Api, Resource
+# from werkzeug.exceptions import NotFound
 
 
 # this is how the Flask app is initialized
@@ -17,26 +18,57 @@ app.json.compact = False
 migrate = Migrate(app, db)
 db.init_app(app)
 
-@app.route("/properties")
-def index():
-    all_props = []
-    for prop in Property.query.all():
-        prop_dict = dict(
-            address=prop.address,
-            image=prop.image,
-            bedrooms=prop.bedrooms,
-            bathrooms=prop.bathrooms,
-            floors=prop.floors,
-            garage=prop.garage,
-            pool=prop.pool,
+api = Api(app)
+
+class Properties(Resource):
+    def get(self):
+        all_props = [prop.to_dict() for prop in Property.query.all()]
+        return make_response(all_props, 200)
+    
+    def post(self):
+        new_prop = Property(
+            address=request.form["address"],
+            image=request.form["image"],
+            bedrooms=int(request.form["bedrooms"]),
+            bathrooms=int(request.form["bathrooms"]),
+            floors=int(request.form["floors"]),
+            garage=True if request.form["garage"] == 'true' else False,
+            pool=True if request.form["pool"] == 'true' else False,
         )
-        all_props.append(prop_dict)
-    return all_props
+        db.session.add(new_prop)
+        db.session.commit()
+        return make_response(new_prop.to_dict(), 201)
+    
+api.add_resource(Properties, "/properties")
 
+class PropertyById(Resource):
+    def get(self, prop_id):
+        found_prop = Property.query.filter_by(id=prop_id).first()
+        if found_prop:
+            return make_response(found_prop.to_dict(), 200)
+        else:
+            return make_response({"error": f'property {prop_id } not found'}, 404)
 
+    def patch(self, prop_id):
+        found_prop = Property.query.filter_by(id=prop_id).first()
+        form_data = request.form
+        for key in form_data:
+            print(f'{key}: {form_data[key]}')
+            setattr(found_prop, key, form_data[key])
+        db.session.add(found_prop)
+        db.session.commit()
+        return make_response(found_prop.to_dict(), 200)
 
-
-
+    def delete(self, prop_id):
+        found_prop = Property.query.filter_by(id=prop_id).first()
+        if not found_prop:
+            raise abort(404, f'Property of ID: {prop_id} not found')
+        db.session.delete(found_prop)
+        db.session.commit()
+        return make_response({}, 204)
+        
+        
+api.add_resource(PropertyById, "/properties/<int:prop_id>")
 
 
 # order of operations for initializing and setting up flask app/db:
