@@ -2,9 +2,15 @@ from ipdb import set_trace
 from flask import Flask, request, make_response, jsonify, abort
 # migrations are basically fundamental changes to our DB (ex. DROP TABLE, CREATE TABLE, INSERT, etc.)
 from flask_migrate import Migrate
-from models import db, Property
+from models import db, Property, User
 from flask_restful import Api, Resource
+User
+from flask_login import LoginManager
+
+
+
 # from werkzeug.exceptions import NotFound
+main
 
 
 # this is how the Flask app is initialized
@@ -18,7 +24,51 @@ app.json.compact = False
 migrate = Migrate(app, db)
 db.init_app(app)
 
+User
+login_manager = LoginManager(app)
+login_manager.init_app(app)
+
+@app.route("/properties")
+def index():
+    all_props = []
+    for prop in Property.query.all():
+        prop_dict = dict(
+            address=prop.address,
+            image=prop.image,
+            bedrooms=prop.bedrooms,
+            bathrooms=prop.bathrooms,
+            floors=prop.floors,
+            garage=prop.garage,
+            pool=prop.pool,
+        )
+        all_props.append(prop_dict)
+    return all_props
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        login_user(user)
+        
+        flask.flash('Logged in successfully.')
+
+        next = flask.request.args.get('next')
+        if not url_has_allowed_host_and_scheme(next, request.host):
+            return flask.abort(400)
+        
+        return flask.redirect(next or flask.url_for('index'))
+    return flask.render_template('login.html', form=form)
+
+
+
+
+
 api = Api(app)
+main
 
 class Properties(Resource):
     def get(self):
