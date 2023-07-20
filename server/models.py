@@ -9,7 +9,7 @@ db = SQLAlchemy()
 
 # this creates a table in our DB
 
-class User(db.model):
+class User(db.model, SerializerMixin):
     __tablename__ = 'user'
 
     email = db.Column(db.String, primary_key=True)
