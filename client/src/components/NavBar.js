@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './client/src/index.css'
+import styles from '../index.css'
 
 const NavBar = () => {
   const [loginData, setLoginData] = useState({

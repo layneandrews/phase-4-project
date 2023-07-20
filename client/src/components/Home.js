@@ -1,7 +1,8 @@
 import React from 'react';
-import styles from './client/src/index.css'
+import styles from '../index.css' 
 
-const Home = () => {
+
+const Home = ({properties}) => {
   return (
     <div style={styles.container}>
       <header style={styles.header}>
