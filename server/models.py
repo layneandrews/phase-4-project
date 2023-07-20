@@ -8,7 +8,7 @@ from sqlalchemy.orm import validates
 db = SQLAlchemy()
 
 # this creates a table in our DB
-User
+
 class User(db.model):
     __tablename__ = 'user'
 
@@ -28,10 +28,9 @@ class User(db.model):
     def is_anonymous(self):
         return False
 
-class Property(db.Model):
 
 class Property(db.Model, SerializerMixin):
-main
+
     # defines the name of the table
     __tablename__ = "properties"
 
@@ -62,4 +61,12 @@ main
 
     def __repr__(self):
         return f'<Property Address:{self.address}, City:{self.city}, State:{self.state}, Image:{self.image}, Bedrooms: {self.bedrooms}, Bathrooms: {self.bathrooms}, Floors: {self.floors}, Garage: {self.garage}, Pool: {self.pool}>'
+    
+class Favorite(db.Model, SerializerMixin):
+    __tablename__ = "favorites"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    property_id = db.Column(db.Integer, db.ForeignKey("properties.id"))
+
 

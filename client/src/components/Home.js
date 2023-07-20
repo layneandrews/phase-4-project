@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './client/src/index.css'
 
 const Home = () => {
   return (
@@ -35,39 +36,39 @@ const Home = () => {
 
 export default Home;
 
-const styles = {
-  container: {
-    fontFamily: 'Arial, sans-serif',
-  },
-  header: {
-    backgroundColor: '#005ba1',
-    color: 'white',
-    padding: '10px',
-  },
-  main: {
-    padding: '20px',
-  },
-  hero: {
-    backgroundColor: '#f0f0f0',
-    padding: '30px',
-    display: 'flex',
-    alignItems: 'center',
-  },
-  sectionTitle: {
-    fontSize: '24px',
-  },
-  featuredProperties: {
-    marginTop: '30px',
-  },
-  propertyList: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    gap: '20px',
-  },
-  searchSection: {
-    marginTop: '30px',
-  },
-  footer: {
-    // Add footer styles here
-  },
-};
+// const styles = {
+//   container: {
+//     fontFamily: 'Arial, sans-serif',
+//   },
+//   header: {
+//     backgroundColor: '#005ba1',
+//     color: 'white',
+//     padding: '10px',
+//   },
+//   main: {
+//     padding: '20px',
+//   },
+//   hero: {
+//     backgroundColor: '#f0f0f0',
+//     padding: '30px',
+//     display: 'flex',
+//     alignItems: 'center',
+//   },
+//   sectionTitle: {
+//     fontSize: '24px',
+//   },
+//   featuredProperties: {
+//     marginTop: '30px',
+//   },
+//   propertyList: {
+//     display: 'grid',
+//     gridTemplateColumns: 'repeat(3, 1fr)',
+//     gap: '20px',
+//   },
+//   searchSection: {
+//     marginTop: '30px',
+//   },
+//   footer: {
+//     // Add footer styles here
+//   },
+// };

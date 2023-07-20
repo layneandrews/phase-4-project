@@ -4,13 +4,12 @@ from flask import Flask, request, make_response, jsonify, abort
 from flask_migrate import Migrate
 from models import db, Property, User
 from flask_restful import Api, Resource
-User
 from flask_login import LoginManager
 
 
 
 # from werkzeug.exceptions import NotFound
-main
+
 
 
 # this is how the Flask app is initialized
@@ -24,7 +23,7 @@ app.json.compact = False
 migrate = Migrate(app, db)
 db.init_app(app)
 
-User
+
 login_manager = LoginManager(app)
 login_manager.init_app(app)
 
@@ -68,7 +67,7 @@ def login():
 
 
 api = Api(app)
-main
+
 
 class Properties(Resource):
     def get(self):
