@@ -18,9 +18,7 @@ const PropertyCard = ({property, setEditProperty, deleteProperty}) => {
             <h3>{address}</h3>
             <p>{city}</p>
             <p>{state}</p>
-            <p>Bedrooms: {bedrooms}</p>
-            <p>Bathrooms: {bathrooms}</p>
-            <p>Floors: {floors}</p>
+            
 
             <button onClick={handleEditButton}>Edit</button>
             <button onClick={handleDeleteButton}>Delete</button>
