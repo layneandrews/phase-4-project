@@ -6,6 +6,7 @@ import PropertyContainer from "./components/PropertyContainer";
 import PropertyDetail from "./components/PropertyDetail";
 import PropertyForm from "./components/PropertyForm";
 import PropertyEditForm from "./components/PropertyEditForm";
+import Authenticate from "./components/Authentication";
 
 const App = () => {
   const [properties, setProperties] = useState([])

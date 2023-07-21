@@ -1,4 +1,5 @@
 from app import app
+from ipdb import set_trace
 from models import db, Property, Favorite, User
 from faker import Faker
 
@@ -16,8 +17,12 @@ with app.app_context():
     db.session.add(p2)
     p3 = Property(address="123 E 200 N", city="Welsh", state="WV", image="https://media.istockphoto.com/id/1436217023/photo/exterior-of-a-blue-suburban-home.jpg?s=170667a&w=0&k=20&c=nCVY3g1t4Iz17Zs1PU46LDbp7IGEPjXUbMI8RTKsSrc=", bedrooms=4, bathrooms=2, floors=3)
     db.session.add(p3)
+
+    u1 = User(name="Steve", email="steve@s.com")
+    db.session.add(u1)
     
     db.session.commit()
+    # set_trace()
 
     print("Properties seeded...")
     

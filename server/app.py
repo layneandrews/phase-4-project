@@ -4,10 +4,11 @@ from flask_migrate import Migrate
 from models import db, Property, User, Favorite
 from flask_restful import Api, Resource
 from flask_login import LoginManager
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, Unauthorized
 from flask_cors import CORS #cross origins resource sharing
 from dotenv import dotenv_values
 from flask_bcrypt import Bcrypt
+from sqlalchemy_serializer import SerializerMixin
 
 # this is how the Flask app is initialized
 # __name__ means main
@@ -15,21 +16,23 @@ app = Flask(__name__)
 CORS(app)
 bcrypt = Bcrypt(app)
 
+ENV = dotenv_values("../.env")
+app.secret_key = ENV["SECRET_KEY"]
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # this configures json to print on indented lines
 app.json.compact = False
 # ENV = dotenv_values("../.env")
-# app.secret_key = ENV["SECRET_KEY"]
+
 
 migrate = Migrate(app, db)
 db.init_app(app)
 api = Api(app)
 
 
-class Properties(Resource):
+class Properties(Resource, SerializerMixin):
     def get(self):
-        all_props = [prop.to_dict() for prop in Property.query.all()]
+        all_props = [prop.to_dict(rules=("-bedrooms","-bathrooms", "-floors",)) for prop in Property.query.all()]
         return make_response(all_props, 200)
     
     def post(self):
@@ -47,6 +50,7 @@ class Properties(Resource):
         db.session.add(new_prop)
         db.session.commit()
         return make_response(new_prop.to_dict(), 201)
+    
     
 api.add_resource(Properties, "/properties")
 
@@ -78,6 +82,16 @@ class PropertyById(Resource):
         
         
 api.add_resource(PropertyById, "/properties/<int:id>")
+
+
+# class Users(Resource):
+#     form_json = request.get_json()
+#     new_user = User(
+#         name=form_json["name"],
+#         email=form_json["email"]
+#     )
+#     db.session.add(new_user)
+#     db.session.commit()
 
 
 # order of operations for initializing and setting up flask app/db:
